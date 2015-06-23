@@ -1,0 +1,69 @@
+3 - Taxperson
+
+Calculate the total cost of an item including tax based on whether it is considered a necessary or luxury item. The tax rate for basic necessities is 1%, the tax rate for luxury items is 9%. For simplicity of implementation, all transactions are measured in cents (pennies).
+
+in TCL
+
+#Start 
+set item 0
+set basePrice 0
+#Comment: tcl-precision global can be used instead of format command
+#set tcl_precision 2
+
+#Get from user base price of the item 
+
+set b 1
+while {$basePrice == 0 || $basePrice == "" } {
+   #Get info from user on the base price
+   puts “Enter item base price, under $100000, in dollars, ex 99”
+   puts -nonewline "Please enter  base price of the item: "
+   flush stdout
+   gets stdin basePrice
+   set basePrice [expr $basePrice * 100]
+   set basePrice [format "%7.0f" $basePrice"
+
+   puts "You entered: $basePrice in cents"
+
+   if {$b == 3 } {
+      #Since user did not enter valid price for basePrice
+      puts "You did not enter valid  base price, price 1 cent is set. \n" 
+      set basePrice 1
+      break
+   }
+   incr b
+}
+
+set i 0
+while {$item != 1 || $item != 2 } {
+   #Get info from user if this is necessary or luxury item 
+   puts -nonewline "Please enter 1 for necessary or 2 for luxury item: "
+   flush stdout
+   gets stdin item
+   puts "You entered: $item"
+
+   if  {$i == 3 } {
+      #Since user did not enter 1 or 2, make item as necessary 
+      puts "You did not enter 1 or 2, this item is set as necessary." 
+      set item 1
+      break
+   }
+   incr i
+}
+
+
+#calculate final price of the item in cents
+if {$item == 1} {
+   
+   set finalPrice [expr $basePrice + {$basePrice * 0.01}]
+   set finalPrice [format "%9.0f" $finalPrice"
+   puts "This is necessary item. Its final price in cents is:  $finalPrice " 
+}
+
+if {$item == 2} {
+   
+   set finalPrice [expr $basePrice + {$basePrice * 0.09}]
+   set finalPrice [format "%9.0f" $finalPrice"
+   puts "This is luxury  item. Its final price in cents is:  $finalPrice " 
+}
+
+#end
